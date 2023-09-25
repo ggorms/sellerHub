@@ -1,8 +1,1 @@
-# The Luke Jones Boilerplate
-
-This template is to create a PERN stack app using Vite with ReactJS, Express, and Postgres. This developed by Luke Jones.
-
-# Installation
-
-Run npm i to install packages
-
+Known Bugs: When running "rpm run dev" the "index.css" file is wiped for some reason. Add these 3 lines to "index.css" in order for styling to show: @tailwind base; @tailwind components; @tailwind utilities; There is an issue with my seed file where products sometimes get matched to the wrong sellers because the sellers are not being created in the order I specified.
