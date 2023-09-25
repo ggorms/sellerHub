@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {api as storeApi} from "./api";
+import {storeApi} from "./api";
 
  //session storage key
 const CREDENTIALS = "credentials";
@@ -31,12 +31,12 @@ const authApi = storeApi.injectEndpoints({
 
 function storeToken(state, {payload}){
     console.log(state)
-    state.credentials = {token: payload.token, user: {...payload.user}};
+    state.credentials = {token: payload.token, seller: {...payload.seller}};
     window.sessionStorage.setItem(
         CREDENTIALS,
         JSON.stringify({
             token: payload.token,
-            user: {...payload.user}
+            seller: {...payload.seller}
         })
     )
 }
@@ -47,7 +47,7 @@ const authSlice = createSlice({
     initialState: {
         credentials : JSON.parse(window.sessionStorage.getItem(CREDENTIALS)) || {
             token:"",
-            user: {userId:null}
+            seller: {sellerId:null}
         }
     },
     reducers:{},
@@ -58,7 +58,7 @@ const authSlice = createSlice({
             console.log("logout")
             state.credentials = {
                 token:"",
-                user: {userId:null}
+                seller: {sellerId:null}
             };
             window.sessionStorage.removeItem(CREDENTIALS)
         });

@@ -11,16 +11,16 @@ router.post("/register", async (req, res,next)=>{
     const hashedPassword = await bcrypt.hash(req.body.password, salt_rounds)
 
     try{
-        const user = await prisma.user.create({
+        const seller = await prisma.seller.create({
             data:{
                 username: req.body.username,
                 password:hashedPassword
             }
         })
 
-        const token = jwt.sign({id:user.id}, process.env.JWT)
+        const token = jwt.sign({id:seller.id}, process.env.JWT)
 
-        res.status(201).send({token, user:{userId:user.id, username: user.username}})
+        res.status(201).send({token, seller:{sellerId:seller.id, username: seller.username}})
 
     }catch(err){
         next(err)
@@ -30,23 +30,23 @@ router.post("/register", async (req, res,next)=>{
 
 router.post("/login", async (req, res,next)=>{
     try{
-        const user = await  prisma.user.findUnique({
+        const seller = await  prisma.seller.findUnique({
             where: {username: req.body.username}
         })
 
-        if(!user){
+        if(!seller){
             return res.status(401).send("Invalid Login")
         }
 
-        const isValid = bcrypt.compare(req.body.password, user.password)
+        const isValid = bcrypt.compare(req.body.password, seller.password)
 
         if(!isValid){
             return res.status(401).send("Invalid Login")
         }
 
-        const token = jwt.sign({id:user.id}, process.env.JWT)
+        const token = jwt.sign({id:seller.id}, process.env.JWT)
 
-        res.send({token, user:{userId:user.id, username: user.username}})
+        res.send({token, seller:{sellerId:seller.id, username: seller.username}})
 
     }catch(err){
         next(err);
@@ -54,15 +54,15 @@ router.post("/login", async (req, res,next)=>{
 });
 
 router.get("/me", async (req, res,next)=>{
-    if(!req.user){
+    if(!req.seller){
         return res.send({})
     }
     try{
-        const user = await prisma.user.findUnique({
-            where: {id: req.user.id}
+        const seller = await prisma.seller.findUnique({
+            where: {id: req.seller.id}
         })
 
-        res.send(user)
+        res.send(seller)
     }catch(err){
         next(err)
     }

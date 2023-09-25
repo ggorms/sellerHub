@@ -7,8 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  id       Int    @id @default(autoincrement())
-  username String @unique
+model seller {
+  id       Int        @id @default(autoincrement())
+  username String     @unique
   password String
+  products products[]
+}
+
+model products {
+  id       Int     @id @default(autoincrement())
+  title    String
+  price    Decimal @db.Decimal(10, 2)
+  imgUrl   String
+  seller   seller  @relation(fields: [sellerId], references: [id])
+  sellerId Int
 }
